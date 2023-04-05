@@ -1,56 +1,61 @@
 import time
-import  matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from puzzle import Puzzle
-from ldfs_solver import LDFSSolver
-from astar_solver import AstarSolver
+from rbfs_solver import RBFSSolver
+from ucs_solver import UCSSolver
 
-time1 = []
-time2 = []
-state1 = []
-state2 = []
+time_rbfs = []
+time_ucs = []
+state_rbfs = []
+state_ucs = []
 
-board = [[0,2,3],[1,8,5],[4,7,6]]
+n = 20
+board = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
 puzzle = Puzzle(board)
-for i in range(20):
+for i in range(n):
     puzzle = puzzle.shuffle()
-    ast_slv = AstarSolver(puzzle)
-    ldfs_slv = LDFSSolver(puzzle)
+    rbfs_slv = RBFSSolver(puzzle)
+    ucs_slv = UCSSolver(puzzle)
 
-    tic1 = time.time()
-    slv_puzzle1 = ast_slv.solve()
-    toc1 = time.time()
+    tic = time.time()
+    slv_puzzle_rbfs = rbfs_slv.solve()
+    toc = time.time()
 
-    time1.append(toc1 - tic1)
+    time_rbfs.append(toc - tic)
     steps = 0
-    for smth in slv_puzzle1:
+    for smth in slv_puzzle_rbfs:
         steps += 1
-    state1.append(steps)
+    state_rbfs.append(steps)
+#
+    tic = time.time()
+    slv_puzzle_ucs = ucs_slv.solve()
+    toc = time.time()
 
-    tic2= time.time()
-    slv_puzzle2 = ldfs_slv.solve()
-    toc2 = time.time()
+    time_ucs.append(toc - tic)
+    steps = 0
+    for smth in slv_puzzle_ucs:
+        steps += 1
+    state_ucs.append(steps)
 
-    time2.append(toc2 - tic2)
-    state2.append(len(slv_puzzle2))
+print("Average number of steps for RBFS: " + str(sum(state_rbfs) / n))
+print("Average number of steps for UCS: " + str(sum(state_ucs) / n))
 
-print("Average number of steps for A*: " + str(sum(state1) / 20))
-print("Average number of steps for LDFS: " + str(sum(state2) / 20))
 
-plt.plot(range(1, 21), state1)
+plt.plot(range(1, n+1), state_rbfs)
 plt.show()
-plt.plot(range(1, 21), state2)
-plt.show()
-
-print("Average time for computing: " + str(sum(time1) / 20) + "s")
-print("Average time for computing: " + str(sum(time2) / 20) + "s")
-
-plt.plot(range(1, 21), time1)
-plt.show()
-plt.plot(range(1, 21), time2)
+plt.plot(range(1, n+1), state_ucs)
 plt.show()
 
-print(state1)
-print(state2)
-print(time1)
-print(time2)
+print("Average time for computing: " + str(sum(time_rbfs) / n) + "s")
+print("Average time for computing: " + str(sum(time_ucs) / n) + "s")
+
+plt.plot(range(1, n+1), time_rbfs)
+plt.show()
+plt.plot(range(1, n+1), time_ucs)
+plt.show()
+
+print(state_rbfs)
+print(state_ucs)
+print(time_rbfs)
+print(time_ucs)

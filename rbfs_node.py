@@ -1,4 +1,4 @@
-class AstarNode:
+class RBFSNode:
 
     def __init__(self, puzzle, parent=None, action=None):
         self.puzzle = puzzle
@@ -10,12 +10,8 @@ class AstarNode:
             self.g = 0
 
     @property
-    def score(self):
-        return self.g + self.h
-
-    @property
-    def state(self):
-        return str(self)
+    def board(self):
+        return self.puzzle
 
     @property
     def path(self):
@@ -36,7 +32,7 @@ class AstarNode:
     @property
     def h(self):
         """"h"""
-        return self.puzzle.false_amount
+        return self.puzzle.manhattan
 
     @property
     def f(self):

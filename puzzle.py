@@ -1,6 +1,5 @@
 import itertools
 import random
-import math
 
 
 class Puzzle:
@@ -37,11 +36,11 @@ class Puzzle:
             for action, (r, c) in dirs.items():
                 if 0 <= r < self.scale and 0 <= c < self.scale and \
                    self.board[r][c] == 0:
-                    move = create_move((i,j), (r,c)), action
+                    move = create_move((i, j), (r, c)), action
                     moves.append(move)
         return moves
 
-    """
+
     @property
     def manhattan(self):
         distance = 0
@@ -51,17 +50,19 @@ class Puzzle:
                     x, y = divmod(self.board[i][j]-1, 3)
                     distance += abs(x - i) + abs(y - j)
         return distance
-    """
 
+
+    # h1
     @property
     def false_amount(self):
         amount = 0
-        goal_board = [[1,2,3], [4,5,6], [7,8,0]]
+        goal_board = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
         for i in range(3):
             for j in range(3):
                 if self.board[i][j] != goal_board[i][j]:
                     amount += 1
         return amount
+
 
     def shuffle(self):
         puzzle = self
